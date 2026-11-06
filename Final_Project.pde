@@ -1,7 +1,9 @@
+import processing.sound.*;
+
 /*
 Khang
 Final Processing Project
-Eating Contest
+Eating Contest  
 */
 
 int scene = 0;
@@ -11,6 +13,9 @@ int startTime;
 
 PImage hamburger;
 PImage Bob;
+PImage BobFat;
+
+SoundFile backgroundSound;
 
 float bobSize = 150;
 float growth = 5;
@@ -20,6 +25,9 @@ void setup() {
 
   hamburger = loadImage("hamburger.png");
   Bob = loadImage("Bob.png");
+  BobFat = loadImage("BobFat.png");
+
+  backgroundSound = new SoundFile(this, "cartoon_bite_sound_effect.mp3");
 
   textAlign(CENTER, CENTER);
 }
@@ -39,11 +47,6 @@ void draw() {
 // DECORATED MENU
 void drawMenu() {
   background(135, 206, 250);
-
-  // Sun
-  noStroke();
-  fill(255, 220, 50);
-  ellipse(520, 65, 70, 70);
 
   // Clouds
   drawCloud(100, 65);
@@ -107,9 +110,16 @@ void drawFood(float x, float y) {
   // Lettuce
   fill(70, 200, 70);
   rect(x - 22, y, 44, 6);
+
+  // Patty
+  fill(120, 65, 30);
+  rect(x - 22, y + 6, 44, 7);
+
+  // Bottom bun
+  fill(255, 180, 60);
+  rect(x - 22, y + 13, 44, 7);
 }
 
-// GAME SCREEN
 void drawGame() {
   background(135, 206, 235);
 
@@ -120,21 +130,21 @@ void drawGame() {
   text("Score: " + score, 100, 35);
   text("Time: " + timeLeft, 500, 35);
 
-  // Bob grows as he eats
-  if (Bob != null) {
-    imageMode(CENTER);
+  imageMode(CENTER);
+
+  if (score >= 20 && BobFat != null) {
+    image(BobFat, 180, 200, bobSize, bobSize);
+  } else if (Bob != null) {
     image(Bob, 180, 200, bobSize, bobSize);
   }
 
   // Hamburger stays the same size
   if (hamburger != null) {
-    imageMode(CENTER);
     image(hamburger, 420, 200, 100, 100);
   }
 
   imageMode(CORNER);
 
-  // Eat button instructions
   fill(255, 200, 50);
   rect(180, 300, 240, 50, 15);
 
@@ -142,7 +152,6 @@ void drawGame() {
   textSize(20);
   text("Press SPACE to eat!", 300, 325);
 
-  // Check game result
   if (timeLeft <= 0) {
     if (score >= 20) {
       scene = 2;
@@ -152,7 +161,6 @@ void drawGame() {
   }
 }
 
-// WIN SCREEN
 void drawWin() {
   background(80, 220, 120);
 
@@ -163,16 +171,20 @@ void drawWin() {
   textSize(25);
   text("You ate " + score + " items!", 300, 125);
 
-  if (Bob != null) {
-    imageMode(CENTER);
+  // Show Bob's picture
+  imageMode(CENTER);
+
+  if (score >= 10 && BobFat != null) {
+    image(BobFat, 300, 220, bobSize, bobSize);
+  } else if (Bob != null) {
     image(Bob, 300, 220, bobSize, bobSize);
-    imageMode(CORNER);
   }
+
+  imageMode(CORNER);
 
   drawRestartButton();
 }
 
-// GAME OVER SCREEN
 void drawLose() {
   background(100, 140, 230);
 
@@ -183,16 +195,20 @@ void drawLose() {
   textSize(25);
   text("You ate " + score + " items!", 300, 125);
 
-  if (Bob != null) {
-    imageMode(CENTER);
+  // Show Bob's current picture
+  imageMode(CENTER);
+
+  if (score >= 10 && BobFat != null) {
+    image(BobFat, 300, 220, bobSize, bobSize);
+  } else if (Bob != null) {
     image(Bob, 300, 220, bobSize, bobSize);
-    imageMode(CORNER);
   }
+
+  imageMode(CORNER);
 
   drawRestartButton();
 }
 
-// RESTART BUTTON
 void drawRestartButton() {
   fill(50, 200, 70);
   rect(200, 310, 200, 60, 15);
@@ -202,18 +218,13 @@ void drawRestartButton() {
   text("PLAY AGAIN", 300, 340);
 }
 
-// MOUSE CONTROLS
 void mousePressed() {
-  // Start game
   if (scene == 0) {
     if (mouseX > 200 && mouseX < 400 &&
         mouseY > 265 && mouseY < 325) {
       startGame();
     }
-  }
-
-  // Restart game
-  else if (scene == 2 || scene == 3) {
+  } else if (scene == 2 || scene == 3) {
     if (mouseX > 200 && mouseX < 400 &&
         mouseY > 310 && mouseY < 370) {
       startGame();
@@ -221,12 +232,14 @@ void mousePressed() {
   }
 }
 
-// KEYBOARD CONTROLS
 void keyReleased() {
   if (scene == 1 && key == ' ' && timeLeft > 0) {
     score++;
 
-    // Only Bob gets bigger
+    if (backgroundSound != null) {
+      backgroundSound.play();
+    }
+
     bobSize = bobSize + growth;
 
     // Maximum Bob size
@@ -236,7 +249,6 @@ void keyReleased() {
   }
 }
 
-// START OR RESTART GAME
 void startGame() {
   score = 0;
   timeLeft = 30;
