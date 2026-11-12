@@ -1,3 +1,4 @@
+
 import processing.sound.*;
 
 /*
@@ -14,6 +15,7 @@ int startTime;
 PImage hamburger;
 PImage Bob;
 PImage BobFat;
+
 
 SoundFile backgroundSound;
 
