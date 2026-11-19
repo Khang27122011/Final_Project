@@ -1,4 +1,3 @@
-
 import processing.sound.*;
 
 /*
@@ -53,8 +52,8 @@ void drawMenu() {
   background(135, 206, 250);
 
   drawCloud(100, 65);
-  drawCloud(280, 75);
-  drawCloud(420, 130);
+  drawCloud(280, 65);
+  drawCloud(420, 65);
 
   fill(80, 200, 100);
   rect(0, 340, 600, 60);
@@ -290,4 +289,4 @@ void startGame() {
   bobSize = 150;
   startTime = millis();
   scene = 1;
-}
+            }
