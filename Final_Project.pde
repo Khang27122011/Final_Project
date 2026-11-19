@@ -6,6 +6,12 @@ Final Processing Project
 Eating Contest
 */
 
+/*
+sources for sound: https://www.myinstants.com/media/sounds/cartoon_bite_sound_effect.mp3
+Bob and BobFat images made by chatgpt
+pizza and coke made by chatgpt
+hamburger: https://images.vexels.com/media/users/3/230823/isolated/preview/aac02a035207de9b98ead97e9642dbba-happy-hamburger-cartoon.png?w=360
+*/
 int scene = 0;
 int score = 0;
 int timeLeft = 30;
@@ -101,6 +107,7 @@ void drawCloud(float x, float y) {
 void drawFood(float x, float y) {
   noStroke();
 
+
   fill(255, 180, 60);
   arc(x, y, 45, 30, PI, TWO_PI);
 
@@ -117,7 +124,7 @@ void drawFood(float x, float y) {
 void drawGame() {
   background(135, 206, 235);
 
-  timeLeft = 30 - (millis() - startTime) / 500;
+  timeLeft = 30 - (millis() - startTime) / 300;
 
   fill(255);
   textSize(25);
@@ -131,7 +138,7 @@ void drawGame() {
       image(BobFat, 180, 200, bobSize, bobSize);
     }
   } else {
-    if (Bob != null) {
+   if (Bob != null) {
       image(Bob, 180, 200, 150, 150);
     }
   }
@@ -170,7 +177,7 @@ void drawWin() {
   background(135, 206, 250);
 
   drawCloud(80, 70);
-  drawCloud(420, 65);
+  drawCloud(420, 65);     
 
 
   fill(80, 200, 100);
